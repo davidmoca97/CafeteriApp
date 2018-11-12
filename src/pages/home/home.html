@@ -1,21 +1,22 @@
 <ion-header>
-  <ion-navbar color="green">
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+    <ion-navbar color="green">
+        <ion-title>Home</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <img src="../../assets/imgs/green.png">
-  <br>
-  <ion-card *ngFor="let comida of menu">
-  <img [src]="comida.img"/>
-  <ion-card-content>
-    <ion-card-title>
-      {{ comida.comida }} <ion-badge color="danger">${{ comida.precio }}</ion-badge>
-      </ion-card-title>
-    <p>
-      {{ comida.descripcion }}
-    </p>
-  </ion-card-content>
-</ion-card>
+    <img src="../../assets/imgs/green.png">
+    <br>
+    <ion-card *ngFor="let comida of menu" (click)="MostrarFicha(comida)">
+        <img [src]="comida.img" />
+        <ion-card-content>
+            <ion-card-title>
+                {{ comida.comida }}
+                <ion-badge color="danger">${{ comida.precio }}</ion-badge>
+            </ion-card-title>
+            <p>
+                {{ comida.descripcion }}
+            </p>
+        </ion-card-content>
+    </ion-card>
 </ion-content>

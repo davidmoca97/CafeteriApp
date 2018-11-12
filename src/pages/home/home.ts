@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { FichaPage } from '../ficha/ficha';
 
 @Component({
   selector: 'page-home',
@@ -15,7 +16,8 @@ export class HomePage {
 			precio: 15,
 			img: 'https://cdn.shopify.com/s/files/1/1850/4533/products/jelp-app-ti'
 			+ 'juana-asadero-tecolote-quesadilla_con_carne_530x_2x_3fd4f4f7-6d7a-4c11-9141-6300ea2471ad_800x.png?v=1526174387',
-			descripcion: 'Quesadillas de tortilla de harina hechas con mucho queso'
+			descripcion: 'Quesadillas de tortilla de harina hechas con mucho queso',
+			conGuisado: true
 		},
 		{
 			comida: 'Torta',
@@ -23,7 +25,9 @@ export class HomePage {
 			stock: 40,
 			precio: 19,
 			img: 'https://www.lacampanacyt.com/images/menu/tipicos-mexicanos/Torta-cubana.jpg',
-			descripcion: 'Tortas de bistek, pastor, y otras...'
+			descripcion: 'Tortas de bistek, pastor, y otras...',
+			tipo: ['Bistek', 'Pastor', 'Cubana'],
+			conGuisado: false
 		},
 		{
 			comida: 'Baguette',
@@ -31,12 +35,18 @@ export class HomePage {
 			stock: 40,
 			precio: 19,
 			img: 'https://cocinaconalegria.com/media/zoo/images/Img20389_538aa00b8eb6fe265aa2c7e91e4b7621.jpg',
-			descripcion: 'Tortas de bistek, pastor, y otras...'
+			descripcion: 'Tortas de bistek, pastor, y otras...',
+			conGuisado: true
 		}
 	];
 
   constructor(public navCtrl: NavController) {
 
+  }
+
+  MostrarFicha(comida) {
+	console.log( comida );
+	this.navCtrl.push( FichaPage, { comida } );
   }
 
 }

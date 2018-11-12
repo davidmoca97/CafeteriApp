@@ -6,31 +6,46 @@
 -->
 <ion-header>
 
-  <ion-navbar color="green">
-    <ion-title>&Oacute;rdenes</ion-title>
-  </ion-navbar>
+    <ion-navbar color="green">
+        <ion-title>Orden</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-<ion-list>
-	<ion-item>
-    <ion-thumbnail item-start>
-      <img src="http://thehandystuff.com/wp-content/uploads/2017/09/Are-Plastic-Food-Containers-Recyclable.jpg">
-    </ion-thumbnail>
-    <h2>Ensalada</h2>
-    <p>1 pieza • $45</p>
-    <button ion-button clear item-end>Borrar</button>
-  </ion-item>
-
-  <ion-item>
-    <ion-thumbnail item-start>
-      <img src="https://www.myamericanmarket.com/873-large_default/coca-cola-classic.jpg">
-    </ion-thumbnail>
-    <h2>Coca Cola de lata</h2>
-    <p>1 pieza • $10</p>
-    <button ion-button clear item-end>Borrar</button>
-  </ion-item>
-</ion-list>
+    <ion-list>
+        <ion-item *ngFor="let item of orden; let i = index">
+            <ion-thumbnail item-start>
+                <img [src]="item.comida.img">
+            </ion-thumbnail>
+            <h2>{{ item.comida.comida }} (x{{ item.cantidad }})</h2>
+            <p *ngIf="!item.comida.conGuisado">{{ item.tipoComida }}</p>
+            <p *ngIf="item.comida.conGuisado">
+                <ng-container *ngFor="let guisado of item.guisadosOrden; let last = last">
+                    {{ guisado.guisado }} {{ (!last) ? ',': '' }}
+                </ng-container>
+            </p>
+            <p>${{ item.comida.precio * item.cantidad }}</p>
+            <button ion-button clear item-end (click)="borrarItem(i)">Borrar</button>
+        </ion-item>
+    </ion-list>
+    <p *ngIf="!orden">
+        Aún no has agregado nada a tu orden
+    </p>
 </ion-content>
+
+<ion-footer>
+    <ion-item>
+        <ion-label>Hora de recogida</ion-label>
+        <ion-datetime displayFormat="hh:mm a" [(ngModel)]="horaRecoger"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Comentarios</ion-label>
+        <ion-input [(ngModel)]="comentario"></ion-input>
+    </ion-item>
+    <ion-toolbar>
+        <button (click)="ordenar()" ion-button full color="green" [disabled]="!orden || ordenMandada">Ordenar&nbsp;  
+          <ion-icon name="basket"></ion-icon></button>
+    </ion-toolbar>
+</ion-footer>
