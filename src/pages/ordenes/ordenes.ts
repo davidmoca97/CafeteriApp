@@ -12,7 +12,8 @@ export class OrdenesPage {
   orden: any[] =  [];
   horaRecoger;
   comentario;
-  ordenMandada;
+  ordenMandada: boolean;
+  nada: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, 
     private alertCtrl: AlertController, private loadingCtrl: LoadingController,
@@ -28,8 +29,11 @@ export class OrdenesPage {
     this.storage.get('orden').then( (val) => {
       console.log(val);
       if (val) {
+        this.nada = false;
         this.orden = val.lista;
         console.log( this.orden );
+      } else {
+        this.nada = true;
       }
     });
     this.storage.get('ordenMandada').then( (val) => {
@@ -56,17 +60,17 @@ export class OrdenesPage {
 
   ordenar() {
     const confirm = this.alertCtrl.create({
-      title: '¿Estás seguro de ordenas esto?',
+      title: '¿Estás seguro de ordenar esto?',
       message: 'No podrás cambiarlo',
       buttons: [
         {
-          text: 'Disagree',
+          text: 'No',
           handler: () => {
             console.log('Disagree clicked');
           }
         },
         {
-          text: 'Agree',
+          text: 'Sí',
           handler: () => {
             let loading = this.loadingCtrl.create({
               spinner: 'hide',
@@ -82,6 +86,54 @@ export class OrdenesPage {
               this.storage.set('ordenMandada', this.ordenMandada);
               let toast = this.toastCtrl.create({
                 message: 'Tu orden ha sido enviada',
+                duration: 3000,
+                position: 'bottom'
+              });
+
+              toast.onDidDismiss(() => {
+                console.log('Dismissed toast');
+              });
+            
+              toast.present();
+            });
+          
+            loading.present();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  borrar() {
+    const confirm = this.alertCtrl.create({
+      title: '¿Estás seguro de cancelar esta orden?',
+      message: 'No podrás cambiarlo',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Sí, cancelar',
+          handler: () => {
+            let loading = this.loadingCtrl.create({
+              spinner: 'hide',
+              content: `
+              <ion-spinner name="bubbles"></ion-spinner>
+              Cancelando...
+                `,
+              duration: 2000
+            });
+          
+            loading.onDidDismiss(() => {
+              this.ordenMandada = false;
+              this.storage.clear();
+              this.orden = [];
+              let toast = this.toastCtrl.create({
+                message: 'Tu orden ha sido cancelada',
                 duration: 3000,
                 position: 'bottom'
               });

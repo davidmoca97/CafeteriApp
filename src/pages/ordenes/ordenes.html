@@ -14,7 +14,7 @@
 
 
 <ion-content>
-    <ion-list>
+    <ion-list class="animated fadeInDown">
         <ion-item *ngFor="let item of orden; let i = index">
             <ion-thumbnail item-start>
                 <img [src]="item.comida.img">
@@ -30,8 +30,10 @@
             <button ion-button clear item-end (click)="borrarItem(i)">Borrar</button>
         </ion-item>
     </ion-list>
-    <p *ngIf="!orden">
-        Aún no has agregado nada a tu orden
+    <p *ngIf="nada">
+        <ion-item>
+            <ion-label> Aún no has agregado nada a tu orden</ion-label>
+        </ion-item>
     </p>
 </ion-content>
 
@@ -45,7 +47,9 @@
         <ion-input [(ngModel)]="comentario"></ion-input>
     </ion-item>
     <ion-toolbar>
-        <button (click)="ordenar()" ion-button full color="green" [disabled]="!orden || ordenMandada">Ordenar&nbsp;  
+        <button (click)="ordenar()" ion-button full color="green" [disabled]="nada || ordenMandada">Ordenar&nbsp;  
           <ion-icon name="basket"></ion-icon></button>
+        <button (click)="borrar()" ion-button full color="danger" [disabled]="nada">Eliminar &nbsp;
+              <ion-icon name="trash"></ion-icon></button>
     </ion-toolbar>
 </ion-footer>
